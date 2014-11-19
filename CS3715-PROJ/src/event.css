@@ -1,15 +1,14 @@
 body{
 	font-size:16px;
-	background-color:white;
+	background-color:#A2AE77;
 }
 
 #header{
 	width:96%;
-	height:20%;
 	border-style:solid;
 	border-width:1px;
 	border-radius:25px;
-	background-color:46bf94;
+	background-color:#C6D0A5;
 	margin:1%;
 	padding:1%;
 }
@@ -18,7 +17,8 @@ body{
 	border-width:1px;
 	border-radius:25px;
 	float:left;
-	background-color:46bf94;
+	clear: left;
+	background-color:#EFF4DA;
 	margin:1%;
 	padding:1%;
 	width:60%;
@@ -28,7 +28,8 @@ body{
 	border-width:1px;
 	border-radius:20px;
 	float: right;
-	background-color:46bf94;
+	clear: right;
+	background-color:#EFF4DA;
 	margin:1%;
 	padding:1%;
 	width:30%;
@@ -38,7 +39,8 @@ body{
 	border-width:1px;
 	border-radius:25px;
 	float: left;
-	background-color:46bf94;
+	clear: left;
+	background-color:#EFF4DA;
 	margin:1%;
 	padding:1%;
 	width:60%;
