@@ -2,18 +2,91 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>GROUP E - event</title>
-		<link type="text/css" rel="stylesheet" href="event.css">
+		<style>
+		body{
+			font-size:16px;
+			background-color:#A2AE77;
+		}
+		
+		#header{
+			width:96%;
+			border-style:solid;
+			border-width:1px;
+			border-radius:25px;
+			background-color:#C6D0A5;
+			margin:1%;
+			padding:1%;
+		}
+		#createComment{
+			border-style:solid;
+			border-width:1px;
+			border-radius:25px;
+			float:left;
+			clear: left;
+			background-color:#EFF4DA;
+			margin:1%;
+			padding:1%;
+			width:60%;
+		}
+		#visitorsComments{
+			border-style:solid;
+			border-width:1px;
+			border-radius:20px;
+			float: right;
+			clear: right;
+			background-color:#EFF4DA;
+			margin:1%;
+			padding:1%;
+			width:30%;
+		}
+		#bloggerComments{
+			border-style:solid;
+			border-width:1px;
+			border-radius:25px;
+			float: left;
+			clear: left;
+			background-color:#EFF4DA;
+			margin:1%;
+			padding:1%;
+			width:60%;
+		}
+		
+		
+		
+		@media screen and (min-device-width:481px){
+			#blogger1, #blogger2{
+				width:66%;
+				height:26%;	
+			}
+			#events{
+				width:25%;
+				height:60%;	
+				overflow-y:scroll;
+			}
+		}
+		@media screen and(max-device-width:480px){
+			#blogger1,#blogger2{
+				width:96%;	
+			}
+			#events{
+				width:96%;
+			
+			}
+				
+		}		
+	
+		</style>
 	</head>
 	<body>
 		<div id="header">
 			<h1>Event</h1>
-			<a href="index.html">Home</a>
+			<a href="/home">Home</a>
 		</div>
 		<br>
 		<div id="body">
 			<div id="createComment">
 				<p>Make a comment:</p>
-				<form action="post.php" method="POST">
+				<!--<form action="post.php" method="POST">
 					<textarea name="comments" rows="4"></textarea>
 					<br>
 					<select name="post">
@@ -21,7 +94,8 @@
 						<option value="visitor">Visitor</option>
 					</select>
 					<input type="submit">
-				</form>
+				</form>-->
+				<a href = "/create">Click Me!</a>
 			</div>
 			<div id="visitorsComments">
 				Visitors comments will show up here
