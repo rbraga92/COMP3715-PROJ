@@ -28,10 +28,10 @@ form.parse(request, function(error, fields, files) {
 	console.log("parsing done");
 	/* Possible error on Windows systems:
 	tried to rename to an already existing file */
-	fs.rename(files.upload.path, "/tmp/test.png", function(error) {
+	fs.rename(files.upload.path, "./tmp/test.png", function(error) {
 	if (error) {
-	fs.unlink("/tmp/test.png");
-	fs.rename(files.upload.path, "/tmp/test.png");
+	fs.unlink("./tmp/test.png");
+	fs.rename(files.upload.path, "./tmp/test.png");
 	}
 	});
 	response.writeHead(200, {"Content-Type": "text/html"});
@@ -42,7 +42,7 @@ form.parse(request, function(error, fields, files) {
 	}
 	function show(response) {
 	console.log("Request handler 'show' was called.");
-	fs.readFile("/tmp/test.png", "binary", function(error, file) {
+	fs.readFile("./tmp/test.png", "binary", function(error, file) {
 	if(error) {
 	response.writeHead(500, {"Content-Type": "text/plain"});
 	response.write(error + "\n");
