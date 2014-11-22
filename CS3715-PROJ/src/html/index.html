@@ -3,7 +3,74 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Welcome to the web blog of the group e.</title>
-		<link type="text/css" rel="stylesheet" href="main.css">
+		<style>
+			body{
+				font-size:16px;
+				background-color:#A2AE77;
+			}
+			
+			#header{
+				width:96%;
+				height:20%;
+				border-style:solid;
+				border-width:1px;
+				border-radius:25px;
+				background-color:#C6D0A5;
+				margin:1%;
+				padding:1%;
+			}
+			#events{
+				border-style:solid;
+				border-width:1px;
+				border-radius:25px;
+				float:right;
+				background-color:#EFF4DA;
+				margin:1%;
+				padding:1%;
+			}
+			#blogger1, #blogger2, #blogger3,#formBox{
+				border-style:solid;
+				border-width:1px;
+				float:left;
+				clear:left;
+				border-radius:25px;
+				background-color:#EFF4DA;
+				margin:1%;
+				padding:1%;
+			}
+			#footer{
+				width:96%;
+				height:20%;
+				border-style:solid;
+				border-width:1px;
+				clear:both;
+				border-radius:25px;
+				background-color:#EFF4DA;
+				margin:1%;
+				padding:1%;
+			}
+			@media screen and (min-device-width:481px){
+				#blogger1, #blogger2, #blogger3, #formBox{
+					width:66%;
+					height:26%;	
+				}
+				#events{
+					width:25%;
+					height:60%;	
+					overflow-y:scroll;
+				}
+			}
+			@media screen and(max-device-width:480px){
+				#blogger1, #blogger2, #blogger3, #formBox{
+					width:96%;	
+				}
+				#events{
+					width:96%;
+				
+				}
+			}
+		
+		</style>
 	</head>
 	<body>
 		<div id="header">
@@ -16,6 +83,8 @@
 		<h2>Events</h2>
 		<ul id = eventList>
 		<li>
+			<a href = "/event/index.html">Event 1</a>
+		</li>
 		</ul>
 		</div>
 		<div id = "blogger1">
