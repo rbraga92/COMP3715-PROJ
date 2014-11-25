@@ -86,16 +86,16 @@
 		<div id="body">
 			<div id="createComment">
 				<p>Make a comment:</p>
-				<!--<form action="post.php" method="POST">
-					<textarea name="comments" rows="4"></textarea>
-					<br>
-					<select name="post">
+				<form action="/submitComment" method="POST">
+					<select name="poster">
 						<option value="blogger">Blogger</option>
 						<option value="visitor">Visitor</option>
 					</select>
+					<br>
+					<textarea name="commentText" rows="4"></textarea>
+
 					<input type="submit">
-				</form>-->
-				<a href = "/create">Click Me!</a>
+				</form>
 			</div>
 			<div id="visitorsComments">
 				Visitors comments will show up here

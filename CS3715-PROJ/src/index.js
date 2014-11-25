@@ -5,5 +5,5 @@ var handle = {};
 handle["/"] = requestHandlers.start;
 handle["/home"] = requestHandlers.start;
 handle["/event"] = requestHandlers.event;
-handle["/create"] = requestHandlers.create;
+handle["/submitComment"] = requestHandlers.submitComment;
 server.start(router.route, handle);
