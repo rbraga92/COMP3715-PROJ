@@ -1,9 +1,11 @@
 var querystring = require("querystring");
 var fs = require("fs");
-var formidable = require("formidable");
-var util = require("util");
-var counter = 0;
-var commentArray = {};
+var url = require("url");
+
+function GET(response, path){
+    console.log("Data submitted by the user name:  " + path.query.name);
+}
+
 function start(response) {
 	console.log("Request handler 'start' was called.");
 	fs.readFile("./html/index.html", function(error, html){
@@ -15,39 +17,29 @@ function start(response) {
 		response.end();
 		
 	});
-	
-
 }
 
-function event(response){
+function event(response, request){
+	var url_parts = url.parse(request.url,true);
 	console.log("Request handler 'event' was called.");
+
 	fs.readFile("./html/event/event.html", function(error, html){
 		if(error){
 			throw error;
 		}
 		response.writeHead(200, {"Content-Type": "text/html"});
 		response.write(html);
+		if(Object.keys(url_parts.query).length!=0){
+			console.log("Data submitted: "+url_parts.query.comments+" "+url_parts.query.poster);
+		}
 		response.end();
 		
 	});
 }
-function submitComment(res, req){
-	console.log("Request handler 'submitComment' was called");
-	var form = new formidable.IncomingForm();
-	form.parse(req, function(err, fields, files){
-		var commentFile = fs.createWriteStream("./data/comments.txt");
-		commentFile.on('error',function(error){
-			console.log(error);
-			
-		});
-		commentArray[counter] = fields.commentText;
-		commentArray.forEach(function(v){
-			commentFile.write(v.join(", ") + "\n");
-		});
-		
-	});
+function create(response, request){
+	
+	
 }
 
 exports.start = start;
 exports.event = event;
-exports.submitComment = submitComment;

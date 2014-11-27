@@ -86,16 +86,16 @@
 		<div id="body">
 			<div id="createComment">
 				<p>Make a comment:</p>
-				<form action="/submitComment" method="POST">
+				<form id="form1" name="form1"  method="get" action="./event">
+					<textarea name="comments" rows="4"></textarea>
+					<br>
 					<select name="poster">
 						<option value="blogger">Blogger</option>
 						<option value="visitor">Visitor</option>
 					</select>
-					<br>
-					<textarea name="commentText" rows="4"></textarea>
-
-					<input type="submit">
+					<input type="submit" id="addButton" value="submit">
 				</form>
+				<!--<a href = "/create">Click Me!</a>-->
 			</div>
 			<div id="visitorsComments">
 				Visitors comments will show up here
