@@ -30,7 +30,7 @@ function event(response, request){
 		response.writeHead(200, {"Content-Type": "text/html"});
 		response.write(html);
 		if(Object.keys(url_parts.query).length!=0){
-			console.log("Data submitted: "+url_parts.query.comments+" "+url_parts.query.poster);
+			console.log("Data submitted: "+url_parts.query.comments+" "+url_parts.query.author);
 		}
 		response.end();
 		
