@@ -1,7 +1,7 @@
 var querystring = require("querystring");
 var fs = require("fs");
 var url = require("url");
-var commentArray = {};
+var commentArray = [];
 
 function GET(response, path){
     console.log("Data submitted by the user name:  " + path.query.name);
@@ -33,19 +33,23 @@ function event(response, request){
 		response.write(html);
 		if(Object.keys(url_parts.query).length!=0){
 			console.log("Data submitted: "+url_parts.query.comments+" "+url_parts.query.author);
-		    commentArray.push(url_parts.query.author+ ","+url_parts.query.comments + ","+new Date());
-		    
+			var newString = url_parts.query.author+ ","+url_parts.query.comments + ","+new Date();
+		    commentArray.push(newString);
 		}
-		response.end();
 		saveComments();
+		response.end();
+		
 	});
 }
 function saveComments(){
+	console.log("Saving changes...");
+	console.log(commentArray.length);
 	for(var i = 0; i < commentArray.length; i++){
 		fs.appendFile("./html/event/data/comments.txt", commentArray[i], function(err){
 			if(error){
 				console.log(error);
 			}
+			console.log(commentArray[i]);
 		});
 		fs.end();
 	}
