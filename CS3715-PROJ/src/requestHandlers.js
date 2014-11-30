@@ -1,8 +1,7 @@
 var querystring = require("querystring");
 var fs = require("fs");
 var url = require("url");
-var commentArray = [];
-
+var commentArray = new Array();
 function GET(response, path){
     console.log("Data submitted by the user name:  " + path.query.name);
 
@@ -31,29 +30,55 @@ function event(response, request){
 		}
 		response.writeHead(200, {"Content-Type": "text/html"});
 		response.write(html);
-		if(Object.keys(url_parts.query).length!=0){
-			console.log("Data submitted: "+url_parts.query.comments+" "+url_parts.query.author);
-			var newString = url_parts.query.author+ ","+url_parts.query.comments + ","+new Date();
-		    commentArray.push(newString);
-		}
-		saveComments();
 		response.end();
+		if(Object.keys(url_parts.query).length == 2){
+			var now = new Date();
+			console.log("Data submitted: "+url_parts.query.comments+" "+url_parts.query.author);
+			var newPost = [url_parts.query.author,url_parts.query.comments,now];
+		    commentArray.push(newPost);
+			saveComments();
+				
+		}
+		loadComments(response);
+
 		
 	});
 }
 function saveComments(){
 	console.log("Saving changes...");
-	console.log(commentArray.length);
+	fs.writeFile('./html/event/data/comments.txt',"<ul>", function(err){
+		if(err) throw err;
+	});
 	for(var i = 0; i < commentArray.length; i++){
-		fs.appendFile("./html/event/data/comments.txt", commentArray[i], function(err){
-			if(error){
-				console.log(error);
-			}
-			console.log(commentArray[i]);
+		fs.appendFile('./html/event/data/comments.txt',
+					"<li class = 'bloggerComments'>"+
+					commentArray[i][2]+"<br>"+
+					commentArray[i][1]+
+					"</li>"
+				, function(err){
+			if(err) throw err;
 		});
-		fs.end();
 	}
+	fs.appendFile('./html/event/data/comments.txt', "</ul>", function(error){
+		if(error){
+			throw error;
+		}
+	});
+	console.log("Done!");
 }
-
+function loadComments(res){
+	fs.readFile('./html/event/data/comments.txt', function(error, commentString){
+		if(error){
+			throw error;
+		}
+		
+		res.writeHead(200,{"Content-Type":"text/plain"});
+		console.log(commentString.toString());
+		res.write(commentString.toString());
+		res.end();
+	});
+}
 exports.start = start;
 exports.event = event;
+exports.loadComments = loadComments;
+exports.saveComments = saveComments;
