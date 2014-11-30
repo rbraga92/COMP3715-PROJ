@@ -29,9 +29,7 @@ function event(response, request){
 		if(error){
 			throw error;
 		}
-		response.writeHead(200, {"Content-Type": "text/html"});
-		response.write(html);
-		response.end();
+		loadPage(response, html);
 		if(Object.keys(url_parts.query).length == 2){
 			var now = new Date();
 			console.log("Data submitted: "+url_parts.query.comments+" "+url_parts.query.author);
@@ -47,18 +45,17 @@ function event(response, request){
 			saveComments();
 				
 		}
-		loadComments(response);
 
 		
 	});
 }
 function saveComments(){
 	console.log("Saving changes...");
-	fs.writeFile('./html/event/data/comments.txt',"<ul>", function(err){
+	fs.appendFile('./html/event/data/comments.html',"<ul>", function(err){
 		if(err) throw err;
 	});
 	for(var i = 0; i < commentArray.length; i++){
-		fs.appendFile('./html/event/data/comments.txt',
+		fs.appendFile('./html/event/data/comments.html',
 					"<li class = 'comment'>"+
 					commentArray[i][2]+"<br>"+
 					commentArray[i][1]+
@@ -67,18 +64,18 @@ function saveComments(){
 			if(err) throw err;
 		});
 	}
-	fs.appendFile('./html/event/data/comments.txt', "</ul>", function(error){
+	fs.appendFile('./html/event/data/comments.html', "</ul>", function(error){
 		if(error){
 			throw error;
 		}
 	});
 
 	
-	fs.writeFile('./html/event/data/posts.txt',"<ul>", function(err){
+	fs.writeFile('./html/event/data/posts.html',"<ul>", function(err){
 		if(err) throw err;
 	});
 	for(var i = 0; i < postArray.length; i++){
-		fs.appendFile('./html/event/data/posts.txt',
+		fs.appendFile('./html/event/data/posts.html',
 					"<li class = 'post'>"+
 					postArray[i][2]+"<br>"+
 					postArray[i][1]+
@@ -87,7 +84,7 @@ function saveComments(){
 			if(err) throw err;
 		});
 	}
-	fs.appendFile('./html/event/data/posts.txt', "</ul>", function(error){
+	fs.appendFile('./html/event/data/posts.html', "</ul>", function(error){
 		if(error){
 			throw error;
 		}
@@ -97,19 +94,29 @@ function saveComments(){
 	
 	console.log("Done!");
 }
-function loadComments(res){
-	fs.readFile('./html/event/data/comments.txt', function(error, commentString){
-		if(error){
-			throw error;
-		}
-		
-		res.writeHead(200,{"Content-Type":"text/html"});
-		res.write(commentString.toString());
-		
-		res.end();
+function loadPage(res, html){
+	var tmp1="", tmp2 = "";
+	res.writeHead(200, {"Content-Type": "text/html"});
+	res.write(html);
+	res.write("<div id='visitorsComments'>Comments!");
+	fs.readFile('./html/event/data/comments.html', function(error, data){
+		if(error){throw error;}
+		console.log("Comments Loaded from server:\n\n"+data.toString()+"\n");
+		res.write(data.toString());
 	});
+	res.write("</div>");
+	
+	res.write("<div id='bloggerComments'>Posts!");
+	fs.readFile('./html/event/data/posts.html', function(error, data){
+		if(error){throw error;}
+		console.log("Posts loaded from server: \n\n"+data.toString()+"\n");
+		
+		res.write(data.toString());
+	});
+	res.write("</div></div></body></html>");
+	res.end();
 }
 exports.start = start;
 exports.event = event;
-exports.loadComments = loadComments;
+//exports.loadComments = loadComments;
 exports.saveComments = saveComments;
