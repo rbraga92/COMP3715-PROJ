@@ -29,7 +29,8 @@ function event(response, request){
 		if(error){
 			throw error;
 		}
-		loadPage(response, html);
+		response.writeHead(200, {"Content-Type": "text/html"});
+		response.write(html);
 		if(Object.keys(url_parts.query).length == 2){
 			var now = new Date();
 			console.log("Data submitted: "+url_parts.query.comments+" "+url_parts.query.author);
@@ -41,12 +42,20 @@ function event(response, request){
 			else if(url_parts.query.author == ("visitor")){
 				commentArray.push(newPost);
 			}
-		    
 			saveComments();
-				
 		}
-
-		
+	});
+	fs.readFile('./html/event/data/comments.html', function(error, comments){
+		if(error){throw error;}
+		response.write("<div id='visitorsComments'>Comments!");
+		response.write(comments);
+	});
+	fs.readFile('./html/event/data/posts.html', function(error, posts){
+		if(error){throw error;}
+		response.write("</div><div id='bloggerComments'>Posts!\n");
+		response.write(posts);
+		response.write("\n</div></div></body></html>");
+		response.end();
 	});
 }
 function saveComments(){
@@ -72,7 +81,7 @@ function saveComments(){
 
 	
 	fs.writeFile('./html/event/data/posts.html',"<ul>", function(err){
-		if(err) throw err;
+		if(err) {throw err};
 	});
 	for(var i = 0; i < postArray.length; i++){
 		fs.appendFile('./html/event/data/posts.html',
@@ -94,29 +103,7 @@ function saveComments(){
 	
 	console.log("Done!");
 }
-function loadPage(res, html){
-	var tmp1="", tmp2 = "";
-	res.writeHead(200, {"Content-Type": "text/html"});
-	res.write(html);
-	res.write("<div id='visitorsComments'>Comments!");
-	fs.readFile('./html/event/data/comments.html', function(error, data){
-		if(error){throw error;}
-		console.log("Comments Loaded from server:\n\n"+data.toString()+"\n");
-		res.write(data.toString());
-	});
-	res.write("</div>");
-	
-	res.write("<div id='bloggerComments'>Posts!");
-	fs.readFile('./html/event/data/posts.html', function(error, data){
-		if(error){throw error;}
-		console.log("Posts loaded from server: \n\n"+data.toString()+"\n");
-		
-		res.write(data.toString());
-	});
-	res.write("</div></div></body></html>");
-	res.end();
-}
+
 exports.start = start;
 exports.event = event;
-//exports.loadComments = loadComments;
 exports.saveComments = saveComments;
