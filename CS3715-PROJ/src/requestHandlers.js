@@ -25,7 +25,7 @@ function event(response, request){
 	var url_parts = url.parse(request.url,true);
 	console.log("Request handler 'event' was called.");
 
-	var html = fs.readFile("./html/event/event.html", "utf8");
+	var html = fs.readFileSync("./html/event/event.html", "utf8");
 	response.writeHead(200, {"Content-Type": "text/html"});
 	response.write(html);
 	if(Object.keys(url_parts.query).length == 2){
@@ -41,19 +41,18 @@ function event(response, request){
 		saveComments();
 	}
 	var comments = fs.readFileSync("./html/event/data/comments.html", "utf8");
-	response.write("</div><div id='visitorsComments'>Posts!\n");
+	response.write("</div><div id='visitorsComments'>Comments\n<ul>");
 	response.write(comments);
+	response.write("</ul>");
 	var posts = fs.readFileSync('./html/event/data/posts.html', "utf8");
-	response.write("</div><div id='bloggerComments'>Posts!\n");
+	response.write("</div><div id= 'bloggerComments'>Posts!\n<ul>");
 	response.write(posts);
-	response.write("\n</div></div></body></html>");
+	response.write("\n</ul></div></div></body></html>");
 	response.end();
 }
 function saveComments(){
 	console.log("Saving changes...");
-	fs.appendFile('./html/event/data/comments.html',"<ul>", function(err){
-		if(err) throw err;
-	});
+
 	for(var i = 0; i < commentArray.length; i++){
 		fs.appendFile('./html/event/data/comments.html',
 					"<li class = 'comment'>"+
@@ -64,16 +63,6 @@ function saveComments(){
 			if(err) throw err;
 		});
 	}
-	fs.appendFile('./html/event/data/comments.html', "</ul>", function(error){
-		if(error){
-			throw error;
-		}
-	});
-
-	
-	fs.writeFile('./html/event/data/posts.html',"<ul>", function(err){
-		if(err) {throw err;}
-	});
 	for(var i = 0; i < postArray.length; i++){
 		fs.appendFile('./html/event/data/posts.html',
 					"<li class = 'post'>"+
@@ -84,11 +73,6 @@ function saveComments(){
 			if(err) throw err;
 		});
 	}
-	fs.appendFile('./html/event/data/posts.html', "</ul>", function(error){
-		if(error){
-			throw error;
-		}
-	});
 	
 	
 	
