@@ -45,18 +45,14 @@ function event(response, request){
 			saveComments();
 		}
 	});
-	fs.readFile('./html/event/data/comments.html', function(error, comments){
-		if(error){throw error;}
-		response.write("<div id='visitorsComments'>Comments!");
-		response.write(comments);
-	});
-	fs.readFile('./html/event/data/posts.html', function(error, posts){
-		if(error){throw error;}
-		response.write("</div><div id='bloggerComments'>Posts!\n");
-		response.write(posts);
-		response.write("\n</div></div></body></html>");
-		response.end();
-	});
+	var comments = readFileSync("./html/event/data/comments.html", "utf8");
+	response.write("</div><div id='visitorsComments'>Posts!\n");
+	response.write(comments);
+	var posts = readFileSync('./html/event/data/posts.html', "utf8");
+	response.write("</div><div id='bloggerComments'>Posts!\n");
+	response.write(posts);
+	response.write("\n</div></div></body></html>");
+	response.end();
 }
 function saveComments(){
 	console.log("Saving changes...");
@@ -81,7 +77,7 @@ function saveComments(){
 
 	
 	fs.writeFile('./html/event/data/posts.html',"<ul>", function(err){
-		if(err) {throw err};
+		if(err) {throw err;}
 	});
 	for(var i = 0; i < postArray.length; i++){
 		fs.appendFile('./html/event/data/posts.html',
