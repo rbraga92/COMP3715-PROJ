@@ -59,7 +59,7 @@ function saveComments(author, newPost){
 	}
 	else if(author=="blogger"){
 		fs.appendFile('./html/event/data/posts.html',
-				"<li class='comment'>"+
+				"<li class='post'>"+
 				newPost[2]+"<br>"+
 				newPost[1]+
 				"</li>"
