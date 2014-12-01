@@ -25,30 +25,25 @@ function event(response, request){
 	var url_parts = url.parse(request.url,true);
 	console.log("Request handler 'event' was called.");
 
-	fs.readFile("./html/event/event.html", function(error, html){
-		if(error){
-			throw error;
+	var html = fs.readFile("./html/event/event.html", "utf8");
+	response.writeHead(200, {"Content-Type": "text/html"});
+	response.write(html);
+	if(Object.keys(url_parts.query).length == 2){
+		var now = new Date();
+		console.log("Data submitted: "+url_parts.query.comments+" "+url_parts.query.author);
+		var newPost = [url_parts.query.author,url_parts.query.comments,now];
+		if(url_parts.query.author == ("blogger")){
+			postArray.push(newPost);
 		}
-		response.writeHead(200, {"Content-Type": "text/html"});
-		response.write(html);
-		if(Object.keys(url_parts.query).length == 2){
-			var now = new Date();
-			console.log("Data submitted: "+url_parts.query.comments+" "+url_parts.query.author);
-
-			var newPost = [url_parts.query.author,url_parts.query.comments,now];
-			if(url_parts.query.author == ("blogger")){
-				postArray.push(newPost);
-			}
-			else if(url_parts.query.author == ("visitor")){
-				commentArray.push(newPost);
-			}
-			saveComments();
+		else if(url_parts.query.author == ("visitor")){
+			commentArray.push(newPost);
 		}
-	});
-	var comments = readFileSync("./html/event/data/comments.html", "utf8");
+		saveComments();
+	}
+	var comments = fs.readFileSync("./html/event/data/comments.html", "utf8");
 	response.write("</div><div id='visitorsComments'>Posts!\n");
 	response.write(comments);
-	var posts = readFileSync('./html/event/data/posts.html', "utf8");
+	var posts = fs.readFileSync('./html/event/data/posts.html', "utf8");
 	response.write("</div><div id='bloggerComments'>Posts!\n");
 	response.write(posts);
 	response.write("\n</div></div></body></html>");
