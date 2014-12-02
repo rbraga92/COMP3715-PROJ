@@ -69,10 +69,7 @@ function event(response, request){
 		response.end();
 	}
 }
-function loadImage(response, request){
-	response.writeHead(200,{"Content-Type":"image/png"});
-	response.end(fs.readFileSync(request.pathname), binary);
-}
+
 function saveComments(author, newPost){
 	console.log("Saving changes...");
 	
@@ -105,4 +102,3 @@ function saveComments(author, newPost){
 exports.start = start;
 exports.event = event;
 exports.saveComments = saveComments;
-exports.loadImage = loadImage;
