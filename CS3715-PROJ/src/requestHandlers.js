@@ -33,16 +33,42 @@ function event(response, request){
 		console.log("Data submitted: "+url_parts.query.comments+" "+url_parts.query.author);
 		var newPost = [url_parts.query.author,url_parts.query.comments,now];
 		saveComments(url_parts.query.author, newPost);
+		
+		var comments = fs.readFileSync("./html/event/data/comments.html", "utf8");
+		if(newPost[0]=='visitor'){
+			response.write("</div><div id='visitorsComments'>Comments\n<ul>");
+			response.write(comments);
+			response.write("<li class='post'>"+newPost[2]+"<br>"+newPost[1]+"</li>");
+			response.write("</ul>");
+			var posts = fs.readFileSync('./html/event/data/posts.html', "utf8");
+			response.write("</div><div id= 'bloggerComments'>Posts!\n<ul>");
+			response.write(posts);
+			response.write("\n</ul></div></div></body></html>");
+			response.end();
+		}
+		else if(newPost[0]=='blogger'){
+			response.write("</div><div id='visitorsComments'>Comments\n<ul>");
+			response.write(comments);
+			response.write("</ul>");
+			var posts = fs.readFileSync('./html/event/data/posts.html', "utf8");
+			response.write("</div><div id= 'bloggerComments'>Posts!\n<ul>");
+			response.write(posts);
+			response.write("<li class='post'>"+newPost[2]+"<br>"+newPost[1]+"</li>");
+			response.write("\n</ul></div></div></body></html>");
+			response.end();
+		}
 	}
-	var comments = fs.readFileSync("./html/event/data/comments.html", "utf8");
-	response.write("</div><div id='visitorsComments'>Comments\n<ul>");
-	response.write(comments);
-	response.write("</ul>");
-	var posts = fs.readFileSync('./html/event/data/posts.html', "utf8");
-	response.write("</div><div id= 'bloggerComments'>Posts!\n<ul>");
-	response.write(posts);
-	response.write("\n</ul></div></div></body></html>");
-	response.end();
+	else{
+		var comments = fs.readFileSync("./html/event/data/comments.html", "utf8");
+		response.write("</div><div id='visitorsComments'>Comments\n<ul>");
+		response.write(comments);
+		response.write("</ul>");
+		var posts = fs.readFileSync('./html/event/data/posts.html', "utf8");
+		response.write("</div><div id= 'bloggerComments'>Posts!\n<ul>");
+		response.write(posts);
+		response.write("\n</ul></div></div></body></html>");
+		response.end();
+	}
 }
 function saveComments(author, newPost){
 	console.log("Saving changes...");
