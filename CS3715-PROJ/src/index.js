@@ -6,5 +6,7 @@ handle["/"] = requestHandlers.start;
 handle["/home"] = requestHandlers.start;
 handle["/event"] = requestHandlers.event;
 handle["/submitComment"] = requestHandlers.submitComment;
-
+handle["./html/img/joshua.jpg"] = requestHandlers.loadImage();
+handle["./html/img/abdullah.jpg"] = requestHandlers.loadImage();
+handle["./html/img/rodrigo.jpg"] = requestHandlers.loadImage();
 server.start(router.route, handle);

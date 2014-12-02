@@ -17,7 +17,6 @@ function start(response) {
 		response.writeHead(200, {"Content-Type": "text/html"});
 		response.write(html);
 		response.end();
-		
 	});
 }
 
@@ -32,13 +31,11 @@ function event(response, request){
 		var now = new Date();
 		console.log("Data submitted: "+url_parts.query.comments+" "+url_parts.query.author);
 		var newPost = [url_parts.query.author,url_parts.query.comments,now];
-		saveComments(url_parts.query.author, newPost);
-		
-		var comments = fs.readFileSync("./html/event/data/comments.html", "utf8");
 		if(newPost[0]=='visitor'){
+			var comments = fs.readFileSync("./html/event/data/comments.html", "utf8");
 			response.write("</div><div id='visitorsComments'>Comments\n<ul>");
-			response.write(comments);
 			response.write("<li class='post'>"+newPost[2]+"<br>"+newPost[1]+"</li>");
+			response.write(comments);
 			response.write("</ul>");
 			var posts = fs.readFileSync('./html/event/data/posts.html', "utf8");
 			response.write("</div><div id= 'bloggerComments'>Posts!\n<ul>");
@@ -47,16 +44,18 @@ function event(response, request){
 			response.end();
 		}
 		else if(newPost[0]=='blogger'){
+			var comments = fs.readFileSync("./html/event/data/comments.html", "utf8");
 			response.write("</div><div id='visitorsComments'>Comments\n<ul>");
 			response.write(comments);
 			response.write("</ul>");
 			var posts = fs.readFileSync('./html/event/data/posts.html', "utf8");
 			response.write("</div><div id= 'bloggerComments'>Posts!\n<ul>");
-			response.write(posts);
 			response.write("<li class='post'>"+newPost[2]+"<br>"+newPost[1]+"</li>");
+			response.write(posts);
 			response.write("\n</ul></div></div></body></html>");
 			response.end();
 		}
+		saveComments(url_parts.query.author, newPost);
 	}
 	else{
 		var comments = fs.readFileSync("./html/event/data/comments.html", "utf8");
@@ -70,25 +69,32 @@ function event(response, request){
 		response.end();
 	}
 }
+function loadImage(response, request){
+	response.writeHead(200,{"Content-Type":"image/png"});
+	response.end(fs.readFileSync(request.pathname), binary);
+}
 function saveComments(author, newPost){
 	console.log("Saving changes...");
 	
 	if(author=="visitor"){
-		fs.appendFile('./html/event/data/comments.html',
+		var oldComments = fs.readFileSync('./html/event/data/comments.html', "utf8");
+		
+		fs.writeFile('./html/event/data/comments.html',
 				"<li class='comment'>"+
 				newPost[2]+"<br>"+
 				newPost[1]+
-				"</li>"
+				"</li>"+"\n"+oldComments
 			, function(err){
 				if(err) throw err;
 		});
 	}
 	else if(author=="blogger"){
-		fs.appendFile('./html/event/data/posts.html',
+		var oldPosts = fs.readFileSync('./html/event/data/posts.html', "utf8");
+		fs.writeFile('./html/event/data/posts.html',
 				"<li class='post'>"+
 				newPost[2]+"<br>"+
 				newPost[1]+
-				"</li>"
+				"</li>"+"\n"+oldPosts
 			, function(err){
 				if(err) throw err;
 		});
@@ -99,3 +105,4 @@ function saveComments(author, newPost){
 exports.start = start;
 exports.event = event;
 exports.saveComments = saveComments;
+exports.loadImage = loadImage;
